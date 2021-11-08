@@ -23,8 +23,14 @@ export function AddAlarmForm(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("Add alarm onSubmit");
-        // TODO implement API call to create alarm on back end.
+
+        // TODO input validation.
+
+        props.addAlarm(newAlarm);
+
+        // Reset form to default.
+        setNewAlarm({...defaultAlarm});
+
     };
 
     const handleChange = (event) => {

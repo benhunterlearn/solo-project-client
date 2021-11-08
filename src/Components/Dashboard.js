@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {createTheme, styled, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -23,6 +24,8 @@ import ListItemText from "@mui/material/ListItemText";
 import {ListItemButton} from "@mui/material";
 import {AddAlarmFromDrawer} from "./AddAlarmFromDrawer";
 import {AddAlarmForm} from "./AddAlarmForm";
+import * as PropTypes from "prop-types";
+import {AlarmList} from "./AlarmList";
 
 const drawerWidth = 240;
 
@@ -72,10 +75,47 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 
 const mdTheme = createTheme();
 
+AlarmList.propTypes = {alarms: PropTypes.arrayOf(PropTypes.any)};
+
 function DashboardContent() {
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
+    };
+
+    const [alarms, setAlarms] = useState([]);
+
+    // Load Alarms from the server.
+    useEffect(() => {
+
+        setAlarms([
+            {
+                name: 'Monitor web.benhunter.me',
+                target: 'http://web.benhunter.me',
+                action: 'HTTP',
+                interval: 1,  // minutes
+                webhook: '(discord webhook)',  // Discord Webhook
+            },
+            {
+                name: 'Monitor home.benhunter.me',
+                target: 'http://home.benhunter.me',
+                action: 'HTTP',
+                interval: 1,  // minutes
+                webhook: '(discord webhook)',  // Discord Webhook
+            },
+        ]);
+
+        // fetch("http://localhost:8080/api/alarms")
+        //     .then(response => response.json())
+        //     .then(json => setAlarms(json));
+
+    }, [])
+
+    const addAlarm = (newAlarm) => {
+        setAlarms([...alarms, newAlarm]);
+
+        // TODO API call to create alarm on back end.
+        console.log("Add alarm.");
     };
 
     return (
@@ -142,7 +182,7 @@ function DashboardContent() {
                             </ListItemIcon>
                             <ListItemText primary="Alarms"/>
                         </ListItemButton>
-                        <AddAlarmFromDrawer />
+                        <AddAlarmFromDrawer/>
 
                     </List>
 
@@ -167,48 +207,12 @@ function DashboardContent() {
                     <Toolbar/>
 
                     {/* Current alarms */}
-                    {/* First alarm */}
-                    <Container sx={{mt: 4, mb: 4}}>
-                        <Grid>
-                            <Paper>
-                                <Title>
-                                    Monitor web.benhunter.me
-                                </Title>
-                                <Typography component="p">
-                                    Target: http://web.benhunter.me
-                                </Typography>
-                                <Typography color="text.secondary" sx={{flex: 1}}>
-                                    Action: HTTP
-                                </Typography>
-                                <Typography>
-                                    Interval: 1 minute
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    </Container>
+                    <AlarmList alarms={alarms}
+                    />
 
-                    {/* Second alarm */}
-                    <Container sx={{mt: 4, mb: 4}}>
-                        <Grid>
-                            <Paper>
-                                <Title>
-                                    Monitor home.benhunter.me
-                                </Title>
-                                <Typography component="p">
-                                    Target: http://home.benhunter.me
-                                </Typography>
-                                <Typography color="text.secondary" sx={{flex: 1}}>
-                                    Action: HTTP
-                                </Typography>
-                                <Typography>
-                                    Interval: 1 minute
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    </Container>
-
-                    {/* TODO Add button here or just on drawer? */}
-                    <AddAlarmForm />
+                    <AddAlarmForm
+                        addAlarm={(alarm) => addAlarm(alarm)}
+                    />
 
                 </Box>
             </Box>
