@@ -13,10 +13,10 @@ export function AddAlarmForm(props) {
 
     const defaultAlarm = {
         name: 'My Alarm',
-        target: '',
+        target: 'http://www.google.com',
         action: 'HTTP',
         interval: 1,  // minutes
-        webhook: '',  // Discord Webhook
+        webhook: '(discord webhook)',  // Discord Webhook
     }
 
     const [newAlarm, setNewAlarm] = useState({...defaultAlarm});
@@ -25,6 +25,16 @@ export function AddAlarmForm(props) {
         event.preventDefault();
         console.log("Add alarm onSubmit");
         // TODO implement API call to create alarm on back end.
+    };
+
+    const handleChange = (event) => {
+        if (event.target.name == 'name') {
+            setNewAlarm({...newAlarm, name: event.target.value});
+        } else if (event.target.name == 'target') {
+            setNewAlarm({...newAlarm, target: event.target.value});
+        } else if (event.target.name == 'webhook') {
+            setNewAlarm({...newAlarm, webhook: event.target.value});
+        }
     };
 
     return <Container sx={{mt: 4, mb: 4}}>
@@ -43,45 +53,44 @@ export function AddAlarmForm(props) {
                     autoComplete="off"
                 >
 
-                    <form onSubmit={(event) => handleSubmit(event)}>
+                    <form onSubmit={(event) => handleSubmit(event)}
+                          onChange={(event) => handleChange(event)}
+                    >
 
                         <div>
 
                             <TextField
                                 required
-                                id="outlined-required"
+                                name="name"
                                 label="Name"
-                                defaultValue="My Alarm"
+                                defaultValue={newAlarm.name}
                             />
-
                             <TextField
                                 required
-                                id="outlined-required"
+                                name="target"
                                 label="Target"
-                                defaultValue="http://www.google.com"
+                                defaultValue={newAlarm.target}
                             />
                             <TextField
                                 disabled
-                                id="outlined-required"
+                                name="action"
                                 label="Action"
-                                defaultValue="HTTP"
+                                defaultValue={newAlarm.action}
                             />
                             <TextField
                                 disabled
-                                id="outlined-required"
+                                name="interval"
                                 label="Interval (minutes)"
-                                defaultValue="1"
+                                defaultValue={newAlarm.interval}
                             />
-
                             <TextField
                                 required
-                                id="webhook"
+                                name="webhook"
                                 label="Discord Webhook"
-                                defaultValue="webhook"
+                                defaultValue={newAlarm.webhook}
                             />
 
                         </div>
-
                         <div>
 
                             <Button
@@ -94,9 +103,7 @@ export function AddAlarmForm(props) {
                             </Button>
 
                         </div>
-
                     </form>
-
                 </Box>
             </Paper>
         </Grid>
