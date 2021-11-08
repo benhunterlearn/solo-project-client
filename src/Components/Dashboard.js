@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {styled, createTheme, ThemeProvider} from '@mui/material/styles';
+import {createTheme, styled, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -13,14 +13,16 @@ import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import {mainListItems} from './listItems';
-import Deposits from './Deposits';
-import Orders from './Orders';
 import Title from "./Title";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ListItemText from "@mui/material/ListItemText";
+import {ListItemButton} from "@mui/material";
+import {AddAlarmFromDrawer} from "./AddAlarmFromDrawer";
+import {AddAlarmForm} from "./AddAlarmForm";
 
 const drawerWidth = 240;
 
@@ -81,6 +83,8 @@ function DashboardContent() {
             <Box sx={{display: 'flex'}}>
                 <CssBaseline/>
                 <AppBar position="absolute" open={open}>
+
+                    {/* Top Toolbar*/}
                     <Toolbar
                         sx={{
                             pr: '24px', // keep right padding when drawer closed
@@ -114,6 +118,7 @@ function DashboardContent() {
                         </IconButton>
                     </Toolbar>
                 </AppBar>
+
                 <Drawer variant="permanent" open={open}>
                     <Toolbar
                         sx={{
@@ -128,9 +133,22 @@ function DashboardContent() {
                         </IconButton>
                     </Toolbar>
                     <Divider/>
-                    <List>{mainListItems}</List>
+
+                    <List>
+
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <DashboardIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Alarms"/>
+                        </ListItemButton>
+                        <AddAlarmFromDrawer />
+
+                    </List>
 
                 </Drawer>
+
+
                 <Box
                     component="main"
                     sx={{
@@ -156,7 +174,7 @@ function DashboardContent() {
                                 <Title>
                                     Monitor web.benhunter.me
                                 </Title>
-                                <Typography component="p" >
+                                <Typography component="p">
                                     Target: http://web.benhunter.me
                                 </Typography>
                                 <Typography color="text.secondary" sx={{flex: 1}}>
@@ -174,10 +192,10 @@ function DashboardContent() {
                         <Grid>
                             <Paper>
                                 <Title>
-                                    Monitor web.benhunter.me
+                                    Monitor home.benhunter.me
                                 </Title>
-                                <Typography component="p" >
-                                    Target: http://web.benhunter.me
+                                <Typography component="p">
+                                    Target: http://home.benhunter.me
                                 </Typography>
                                 <Typography color="text.secondary" sx={{flex: 1}}>
                                     Action: HTTP
@@ -190,6 +208,7 @@ function DashboardContent() {
                     </Container>
 
                     {/* TODO Add button here or just on drawer? */}
+                    <AddAlarmForm />
 
                 </Box>
             </Box>

@@ -10,9 +10,14 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AddAlertIcon from '@mui/icons-material/AddAlert';
+import {Button, Modal} from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import {useState} from "react";
 
-export const mainListItems = (
-    <div>
+
+export const mainListItems = (props) => {
+    return <div>
         <ListItem button>
             <ListItemIcon>
                 <DashboardIcon/>
@@ -26,4 +31,4 @@ export const mainListItems = (
             <ListItemText primary="Add a new Alarm"/>
         </ListItem>
     </div>
-);
+};
