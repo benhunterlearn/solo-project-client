@@ -85,38 +85,56 @@ function DashboardContent() {
 
     const [alarms, setAlarms] = useState([]);
 
-    // Load Alarms from the server.
+    const loadAlarms = () => {
+        // Load alarms from server.
+        fetch('http://localhost:8080/api/alarms')
+            .then(response => response.json())
+            .then(json => {
+                setAlarms(json._embedded.alarms);
+                console.log(json._embedded.alarms)
+            });
+    }
+
+// Load Alarms from the server.
     useEffect(() => {
 
-        setAlarms([
-            {
-                name: 'Monitor web.benhunter.me',
-                target: 'http://web.benhunter.me',
-                action: 'HTTP',
-                interval: 1,  // minutes
-                webhook: '(discord webhook)',  // Discord Webhook
-            },
-            {
-                name: 'Monitor home.benhunter.me',
-                target: 'http://home.benhunter.me',
-                action: 'HTTP',
-                interval: 1,  // minutes
-                webhook: '(discord webhook)',  // Discord Webhook
-            },
-        ]);
+        // setAlarms([
+        //     {
+        //         name: 'Monitor web.benhunter.me',
+        //         target: 'http://web.benhunter.me',
+        //         action: 'HTTP',
+        //         interval: 1,  // minutes
+        //         webhook: '(discord webhook)',  // Discord Webhook
+        //     },
+        //     {
+        //         name: 'Monitor home.benhunter.me',
+        //         target: 'http://home.benhunter.me',
+        //         action: 'HTTP',
+        //         interval: 1,  // minutes
+        //         webhook: '(discord webhook)',  // Discord Webhook
+        //     },
+        // ]);
 
-        // TODO Load from server.
-        fetch("http://localhost:8080/api/alarms")
-            .then(response => response.json())
-            .then(json => setAlarms(json._embedded.alarms));
+        loadAlarms();
 
     }, [])
 
     const addAlarm = (newAlarm) => {
-        setAlarms([...alarms, newAlarm]);
 
-        // TODO API call to create alarm on back end.
+        // Add alarm to local state
+        // setAlarms([...alarms, newAlarm]);
+
+        // API call to create alarm on back end.
         console.log("Add alarm.");
+
+        fetch('http://localhost:8080/api/alarms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newAlarm),
+        })
+            .then(response => loadAlarms())
     };
 
     return (
