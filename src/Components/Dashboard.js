@@ -105,6 +105,7 @@ function DashboardContent() {
             },
         ]);
 
+        // TODO
         // fetch("http://localhost:8080/api/alarms")
         //     .then(response => response.json())
         //     .then(json => setAlarms(json));
