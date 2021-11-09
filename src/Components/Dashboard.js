@@ -105,10 +105,10 @@ function DashboardContent() {
             },
         ]);
 
-        // TODO
-        // fetch("http://localhost:8080/api/alarms")
-        //     .then(response => response.json())
-        //     .then(json => setAlarms(json));
+        // TODO Load from server.
+        fetch("http://localhost:8080/api/alarms")
+            .then(response => response.json())
+            .then(json => setAlarms(json._embedded.alarms));
 
     }, [])
 

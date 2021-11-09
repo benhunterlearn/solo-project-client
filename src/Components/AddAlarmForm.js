@@ -57,11 +57,9 @@ export function AddAlarmForm(props) {
                     }}
                     noValidate
                     autoComplete="off"
+                    onSubmit={(event) => handleSubmit(event)}
+                    onChange={(event) => handleChange(event)}
                 >
-
-                    <form onSubmit={(event) => handleSubmit(event)}
-                          onChange={(event) => handleChange(event)}
-                    >
 
                         <div>
 
@@ -109,7 +107,6 @@ export function AddAlarmForm(props) {
                             </Button>
 
                         </div>
-                    </form>
                 </Box>
             </Paper>
         </Grid>
