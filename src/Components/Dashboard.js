@@ -137,6 +137,13 @@ function DashboardContent() {
             .then(response => loadAlarms())
     };
 
+    const deleteAlarm = (alarm) => {
+        fetch(alarm._links.self.href, {
+            method: 'DELETE',
+        })
+            .then(response => loadAlarms())
+    }
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{display: 'flex'}}>
@@ -227,6 +234,7 @@ function DashboardContent() {
 
                     {/* Current alarms */}
                     <AlarmList alarms={alarms}
+                               deleteAlarm={(alarm) => deleteAlarm(alarm)}
                     />
 
                     <AddAlarmForm

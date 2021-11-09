@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import * as React from "react";
 import * as PropTypes from "prop-types";
+import {Button} from "@mui/material";
 
 const Alarm = (props) => {
     return <Container sx={{mt: 4, mb: 4}}>
@@ -22,6 +23,9 @@ const Alarm = (props) => {
                 <Typography>
                     Interval: {props.alarm.interval} minute
                 </Typography>
+                <Button variant='outlined'
+                        onClick={() => props.deleteAlarm(props.alarm)}
+                >Delete</Button>
             </Paper>
         </Grid>
     </Container>
@@ -32,7 +36,9 @@ Alarm.propTypes = {alarm: PropTypes.any};
 export function AlarmList(props) {
 
     const renderAlarms = () => {
-        return props.alarms.map((alarm) => <Alarm alarm={alarm} />);
+        return props.alarms.map((alarm) => <Alarm alarm={alarm}
+                                                  deleteAlarm={props.deleteAlarm}
+        />);
     }
 
     return renderAlarms();
