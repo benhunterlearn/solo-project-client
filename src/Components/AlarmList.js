@@ -11,26 +11,32 @@ import Box from "@mui/material/Box";
 const Alarm = (props) => {
     return (
         // <Container sx={{mt: 4, mb: 4}}>
-        <Grid item xs={12}>
+        <Grid container item>
             {/*consider md={6} in addition to xs*/}
 
-            <Paper>
+            <Paper sx={{p: 2, margin: 'auto', flexGrow: 1}}>
 
-                <Title>
-                    {props.alarm.name}
-                </Title>
-                <Typography component="p">
-                    Target: {props.alarm.target}
-                </Typography>
-                <Typography color="text.secondary" sx={{flex: 1}}>
-                    Action: {props.alarm.action}
-                </Typography>
-                <Typography>
-                    Interval: {props.alarm.interval} minute
-                </Typography>
-                <Button variant='outlined'
-                        onClick={() => props.deleteAlarm(props.alarm)}
-                >Delete</Button>
+                <Grid xs={2} justifyContent="center">
+                    <Title>
+                        {props.alarm.name}
+                    </Title>
+                    <Typography component="p">
+                        Target: {props.alarm.target}
+                    </Typography>
+                </Grid>
+
+                <Grid xs={2}>
+                    <Typography color="text.secondary" sx={{flex: 1}}>
+                        Action: {props.alarm.action}
+                    </Typography>
+                    <Typography>
+                        Interval: {props.alarm.interval} minute
+                    </Typography>
+                    <Button variant='outlined'
+                            onClick={() => props.deleteAlarm(props.alarm)}
+                    >Delete</Button>
+
+                </Grid>
 
             </Paper>
 
