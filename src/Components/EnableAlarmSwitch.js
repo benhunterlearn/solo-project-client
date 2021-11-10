@@ -13,10 +13,11 @@ function AlarmSwitch(props) {
 }
 
 export default function EnableAlarmSwitch(props) {
-    const [checked, setChecked] = useState(true);
+    const [checked, setChecked] = useState(props.alarm.enabled);
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
+        props.toggleAlarmEnabled(props.alarm);
     };
 
     return (

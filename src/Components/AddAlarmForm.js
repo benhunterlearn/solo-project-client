@@ -15,7 +15,7 @@ export function AddAlarmForm(props) {
         name: 'My Alarm',
         target: 'http://www.google.com',
         action: 'HTTP',
-        interval: 1,  // minutes
+        intervalSeconds: 1,
         webhook: '(discord webhook)',  // Discord Webhook
     }
 

@@ -97,36 +97,15 @@ function DashboardContent() {
 
 // Load Alarms from the server.
     useEffect(() => {
-
-        // setAlarms([
-        //     {
-        //         name: 'Monitor web.benhunter.me',
-        //         target: 'http://web.benhunter.me',
-        //         action: 'HTTP',
-        //         interval: 1,  // minutes
-        //         webhook: '(discord webhook)',  // Discord Webhook
-        //     },
-        //     {
-        //         name: 'Monitor home.benhunter.me',
-        //         target: 'http://home.benhunter.me',
-        //         action: 'HTTP',
-        //         interval: 1,  // minutes
-        //         webhook: '(discord webhook)',  // Discord Webhook
-        //     },
-        // ]);
-
         loadAlarms();
-
     }, [])
 
     const addAlarm = (newAlarm) => {
 
-        // Add alarm to local state
+        // TODO Add alarm to local state (caching?)
         // setAlarms([...alarms, newAlarm]);
 
         // API call to create alarm on back end.
-        console.log("Add alarm.");
-
         fetch('http://localhost:8080/api/alarms', {
             method: 'POST',
             headers: {
@@ -139,9 +118,25 @@ function DashboardContent() {
 
     const deleteAlarm = (alarm) => {
         fetch(alarm._links.self.href, {
-            method: 'DELETE',
+            method: "DELETE",
         })
             .then(response => loadAlarms())
+    }
+
+    function toggleAlarmEnabled(alarm) {
+        const newAlarmEnabled = {
+            enabled: !alarm.enabled,
+        };
+
+        console.log("Toggle alarm: " + alarm.name);
+        fetch(alarm._links.self.href, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newAlarmEnabled),
+        })
+            .then(response => loadAlarms());
     }
 
     return (
@@ -237,6 +232,7 @@ function DashboardContent() {
                     {/* Current alarms */}
                     <AlarmList alarms={alarms}
                                deleteAlarm={(alarm) => deleteAlarm(alarm)}
+                               toggleAlarmEnabled={(alarm) => toggleAlarmEnabled(alarm)}
                     />
 
                     <AddAlarmForm

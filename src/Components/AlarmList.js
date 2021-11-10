@@ -24,29 +24,30 @@ const Alarm = (props) => {
 
 
                     <Grid item sm={2}>
-                        <EnableAlarmSwitch />
+                        <EnableAlarmSwitch alarm={props.alarm}
+                                           toggleAlarmEnabled={props.toggleAlarmEnabled}/>
 
                     </Grid>
 
-                    <Grid item sx={{textAlign: "left"}} xs={12} sm={6} md={4}>
-
+                    <Grid item sx={{textAlign: "left"}} xs={12} sm={6}>
                         <Typography component="p">
                             Target: {props.alarm.target}
                         </Typography>
-                    </Grid>
-
-                    <Grid item sx={{textAlign: "left"}} xs={12} sm={4} md={4}>
-
+                        <Typography color="text.secondary" sx={{flex: 1}}>
+                            Interval: {props.alarm.intervalSeconds} second(s)
+                        </Typography>
                         <Typography color="text.secondary" sx={{flex: 1}}>
                             Action: {props.alarm.action}
                         </Typography>
-                        <Typography>
-                            Interval: {props.alarm.interval} minute
-                        </Typography>
+                    </Grid>
+
+                    <Grid item sx={{textAlign: "left", display: "flex", alignItems: "center"}} xs={12} sm={4} md={2}>
+                        <Button variant='outlined'
+                                // onClick={() => props.updateAlarm(props.alarm)}
+                        >Edit</Button>
                         <Button variant='outlined'
                                 onClick={() => props.deleteAlarm(props.alarm)}
                         >Delete</Button>
-
                     </Grid>
 
                 </Grid>
@@ -63,6 +64,7 @@ export function AlarmList(props) {
     const renderAlarms = () => {
         return props.alarms.map((alarm) => <Alarm alarm={alarm}
                                                   deleteAlarm={props.deleteAlarm}
+                                                  toggleAlarmEnabled={props.toggleAlarmEnabled}
         />);
     }
 

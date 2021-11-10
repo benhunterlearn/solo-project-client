@@ -58,6 +58,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../solo-mvp-server/src/main/java/com/benhunter/solomvpserver/AlarmChecker.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../solo-mvp-server/src/main/java/com/benhunter/solomvpserver/AlarmRepository.java">
           <value>
             <set />
