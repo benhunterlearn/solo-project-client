@@ -42,7 +42,7 @@ const Alarm = (props) => {
                     </Grid>
 
                     <Grid item sx={{textAlign: "left", display: "flex", alignItems: "center"}} xs={12} sm={4} md={1}>
-                        <Button variant='outlined'
+                        <Button variant='disabled'
                                 // onClick={() => props.updateAlarm(props.alarm)}
                         >Edit</Button>
                         <Button variant='outlined'
@@ -63,6 +63,7 @@ export function AlarmList(props) {
 
     const renderAlarms = () => {
         return props.alarms.map((alarm) => <Alarm alarm={alarm}
+                                                  key={alarm.id}
                                                   deleteAlarm={props.deleteAlarm}
                                                   toggleAlarmEnabled={props.toggleAlarmEnabled}
         />);

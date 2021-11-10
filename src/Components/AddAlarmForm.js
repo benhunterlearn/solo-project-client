@@ -116,7 +116,7 @@ export function AddAlarmForm(props) {
 
                     </div>
                     <Link href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks" underline="hover">
-                        {'Help on Discord Webhooks: I need the docs.'}
+                        {'Help with Discord Webhooks'}
                     </Link>
                 </Box>
             </Paper>
