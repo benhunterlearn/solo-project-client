@@ -13,11 +13,11 @@ import Link from "@mui/material/Link";
 export function AddAlarmForm(props) {
 
     const defaultAlarm = {
-        name: 'My Alarm',
-        target: 'http://www.google.com',
+        name: '',
+        target: '',
         action: 'HTTP',
         intervalSeconds: 1,
-        webhook: '(discord webhook)',  // Discord Webhook
+        webhook: '',  // Discord Webhook
     }
 
     const [newAlarm, setNewAlarm] = useState({...defaultAlarm});
@@ -70,14 +70,16 @@ export function AddAlarmForm(props) {
                             required
                             name="name"
                             label="Name"
-                            defaultValue={newAlarm.name}
+                            placeholder={newAlarm.name}
+                            value={newAlarm.name}
                             helperText="Name your new alarm."
                         />
                         <TextField
                             required
                             name="target"
                             label="Target"
-                            defaultValue={newAlarm.target}
+                            placeholder="http://www.google.com"
+                            value={newAlarm.target}
                             helperText="The HTTP address to check."
                         />
                         <TextField
@@ -97,7 +99,7 @@ export function AddAlarmForm(props) {
                             required
                             name="webhook"
                             label="Discord Webhook"
-                            defaultValue={newAlarm.webhook}
+                            value={newAlarm.webhook}
                         />
 
                     </div>
