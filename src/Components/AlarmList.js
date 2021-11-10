@@ -29,7 +29,7 @@ const Alarm = (props) => {
 
                     </Grid>
 
-                    <Grid item sx={{textAlign: "left"}} xs={12} sm={6}>
+                    <Grid item sx={{textAlign: "left"}} xs={12} sm={8}>
                         <Typography component="p">
                             Target: {props.alarm.target}
                         </Typography>
@@ -41,7 +41,7 @@ const Alarm = (props) => {
                         </Typography>
                     </Grid>
 
-                    <Grid item sx={{textAlign: "left", display: "flex", alignItems: "center"}} xs={12} sm={4} md={2}>
+                    <Grid item sx={{textAlign: "left", display: "flex", alignItems: "center"}} xs={12} sm={4} md={1}>
                         <Button variant='outlined'
                                 // onClick={() => props.updateAlarm(props.alarm)}
                         >Edit</Button>
