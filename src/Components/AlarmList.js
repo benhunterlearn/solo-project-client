@@ -4,42 +4,56 @@ import Title from "./Title";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import * as React from "react";
-import {Button} from "@mui/material";
+import {Button, FormControlLabel, Switch} from "@mui/material";
+import EnableAlarmSwitch from "./EnableAlarmSwitch";
+
 
 const Alarm = (props) => {
     return (
-        <Paper sx={{mr: 4, mb: 2, p: 2, flexGrow: 1}}>
+        // <Paper sx={{mr: 4, mb: 2, p: 2, flexGrow: 1}}>
+        <Grid item xs={12} sm={12}>
 
-            <Grid container item xs={12}>
-                {/*consider md={6} in addition to xs*/}
+            <Paper sx={{p: 2}}>
+
+                <Title>
+                    {props.alarm.name}
+                </Title>
+
+                <Grid container spacing={1}>
+                    {/*consider md={6} in addition to xs*/}
 
 
-                <Grid item sx={{textAlign: "left"}} xs={12} sm={6}>
-                    <Title>
-                        {props.alarm.name}
-                    </Title>
-                    <Typography component="p">
-                        Target: {props.alarm.target}
-                    </Typography>
+                    <Grid item sm={2}>
+                        <EnableAlarmSwitch />
+
+                    </Grid>
+
+                    <Grid item sx={{textAlign: "left"}} xs={12} sm={6} md={4}>
+
+                        <Typography component="p">
+                            Target: {props.alarm.target}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item sx={{textAlign: "left"}} xs={12} sm={4} md={4}>
+
+                        <Typography color="text.secondary" sx={{flex: 1}}>
+                            Action: {props.alarm.action}
+                        </Typography>
+                        <Typography>
+                            Interval: {props.alarm.interval} minute
+                        </Typography>
+                        <Button variant='outlined'
+                                onClick={() => props.deleteAlarm(props.alarm)}
+                        >Delete</Button>
+
+                    </Grid>
+
                 </Grid>
 
-                <Grid item sx={{textAlign: "left"}} xs={12} sm={6}>
+            </Paper>
 
-                    <Typography color="text.secondary" sx={{flex: 1}}>
-                        Action: {props.alarm.action}
-                    </Typography>
-                    <Typography>
-                        Interval: {props.alarm.interval} minute
-                    </Typography>
-                    <Button variant='outlined'
-                            onClick={() => props.deleteAlarm(props.alarm)}
-                    >Delete</Button>
-
-                </Grid>
-
-            </Grid>
-
-        </Paper>
+        </Grid>
     );
 }
 
@@ -53,10 +67,8 @@ export function AlarmList(props) {
     }
 
     return (
-        <Container sx={{mx: 4, my: 4}}>
-            <Grid container columnSpacing={4} rowSpacing={2}>
-                {renderAlarms()}
-            </Grid>
-        </Container>
+        <Grid container spacing={2} sx={{mb: 6}}>
+            {renderAlarms()}
+        </Grid>
     );
 }

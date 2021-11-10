@@ -232,6 +232,8 @@ function DashboardContent() {
                     {/* Toolbar adds margin for the actual toolbar above the content. */}
                     <Toolbar sx={{mb: 2}}/>
 
+                    <Container>
+
                     {/* Current alarms */}
                     <AlarmList alarms={alarms}
                                deleteAlarm={(alarm) => deleteAlarm(alarm)}
@@ -240,6 +242,9 @@ function DashboardContent() {
                     <AddAlarmForm
                         addAlarm={(alarm) => addAlarm(alarm)}
                     />
+
+                    </Container>
+
 
                 </Box>
             </Box>
