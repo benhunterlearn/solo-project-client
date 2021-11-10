@@ -178,7 +178,7 @@ function DashboardContent() {
                             @YourService
                         </Typography>
                         <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
+                            <Badge badgeContent={alarms.length} color="secondary">
                                 <NotificationsIcon/>
                             </Badge>
                         </IconButton>
@@ -230,7 +230,7 @@ function DashboardContent() {
 
                     {/* Header inside main content. */}
                     {/* Toolbar adds margin for the actual toolbar above the content. */}
-                    <Toolbar/>
+                    <Toolbar sx={{mb: 2}}/>
 
                     {/* Current alarms */}
                     <AlarmList alarms={alarms}

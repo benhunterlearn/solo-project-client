@@ -6,11 +6,16 @@ import Container from "@mui/material/Container";
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import {Button} from "@mui/material";
+import Box from "@mui/material/Box";
 
 const Alarm = (props) => {
-    return <Container sx={{mt: 4, mb: 4}}>
-        <Grid>
+    return (
+        // <Container sx={{mt: 4, mb: 4}}>
+        <Grid item xs={12}>
+            {/*consider md={6} in addition to xs*/}
+
             <Paper>
+
                 <Title>
                     {props.alarm.name}
                 </Title>
@@ -26,9 +31,13 @@ const Alarm = (props) => {
                 <Button variant='outlined'
                         onClick={() => props.deleteAlarm(props.alarm)}
                 >Delete</Button>
+
             </Paper>
+
         </Grid>
-    </Container>
+
+        // </Container>
+    );
 }
 
 Alarm.propTypes = {alarm: PropTypes.any};
@@ -41,5 +50,11 @@ export function AlarmList(props) {
         />);
     }
 
-    return renderAlarms();
+    return (
+        <Container>
+            <Grid container columnSpacing={4} rowSpacing={2}>
+                {renderAlarms()}
+            </Grid>
+        </Container>
+    );
 }
