@@ -43,9 +43,9 @@ export function AddAlarmForm(props) {
         }
     };
 
-    return <Container sx={{mt: 4, mb: 4}}>
+    return <Container sx={{mt: 0, mb: 4}}>
         <Grid>
-            <Paper>
+            <Paper sx={{p: 2}}>
                 <Title>
                     Add a new Alarm
                 </Title>
@@ -53,7 +53,7 @@ export function AddAlarmForm(props) {
                 <Box
                     component="form"
                     sx={{
-                        '& .MuiTextField-root': {m: 1, width: '25ch'},
+                        '& .MuiTextField-root': {m: 1, width: '30ch'},
                     }}
                     noValidate
                     autoComplete="off"

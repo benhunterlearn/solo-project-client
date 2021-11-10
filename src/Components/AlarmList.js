@@ -4,19 +4,17 @@ import Title from "./Title";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import * as React from "react";
-import * as PropTypes from "prop-types";
 import {Button} from "@mui/material";
-import Box from "@mui/material/Box";
 
 const Alarm = (props) => {
     return (
-        // <Container sx={{mt: 4, mb: 4}}>
-        <Grid container item>
-            {/*consider md={6} in addition to xs*/}
+        <Paper sx={{mr: 4, mb: 2, p: 2, flexGrow: 1}}>
 
-            <Paper sx={{p: 2, margin: 'auto', flexGrow: 1}}>
+            <Grid container item xs={12}>
+                {/*consider md={6} in addition to xs*/}
 
-                <Grid xs={2} justifyContent="center">
+
+                <Grid item sx={{textAlign: "left"}} xs={12} sm={6}>
                     <Title>
                         {props.alarm.name}
                     </Title>
@@ -25,7 +23,8 @@ const Alarm = (props) => {
                     </Typography>
                 </Grid>
 
-                <Grid xs={2}>
+                <Grid item sx={{textAlign: "left"}} xs={12} sm={6}>
+
                     <Typography color="text.secondary" sx={{flex: 1}}>
                         Action: {props.alarm.action}
                     </Typography>
@@ -38,15 +37,12 @@ const Alarm = (props) => {
 
                 </Grid>
 
-            </Paper>
+            </Grid>
 
-        </Grid>
-
-        // </Container>
+        </Paper>
     );
 }
 
-Alarm.propTypes = {alarm: PropTypes.any};
 
 export function AlarmList(props) {
 
@@ -57,7 +53,7 @@ export function AlarmList(props) {
     }
 
     return (
-        <Container>
+        <Container sx={{mx: 4, my: 4}}>
             <Grid container columnSpacing={4} rowSpacing={2}>
                 {renderAlarms()}
             </Grid>
