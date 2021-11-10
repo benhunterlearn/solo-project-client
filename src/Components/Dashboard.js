@@ -26,8 +26,12 @@ import {AddAlarmFromDrawer} from "./AddAlarmFromDrawer";
 import {AddAlarmForm} from "./AddAlarmForm";
 import * as PropTypes from "prop-types";
 import {AlarmList} from "./AlarmList";
+import {utf8_to_b64} from "./b64Utils";
+
+const BASIC_AUTH_TOKEN = utf8_to_b64("user:password");
 
 const drawerWidth = 240;
+
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -87,7 +91,13 @@ function DashboardContent() {
 
     const loadAlarms = () => {
         // Load alarms from server.
-        fetch('http://localhost:8080/api/alarms')
+        fetch('http://localhost:8080/api/alarms', {
+                method: "GET",
+                headers: {
+                    'Authorization': 'Basic ' + BASIC_AUTH_TOKEN,
+                }
+            }
+        )
             .then(response => response.json())
             .then(json => {
                 setAlarms(json._embedded.alarms);
@@ -110,6 +120,7 @@ function DashboardContent() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + BASIC_AUTH_TOKEN,
             },
             body: JSON.stringify(newAlarm),
         })
@@ -119,6 +130,9 @@ function DashboardContent() {
     const deleteAlarm = (alarm) => {
         fetch(alarm._links.self.href, {
             method: "DELETE",
+            headers: {
+                'Authorization': 'Basic ' + BASIC_AUTH_TOKEN,
+            },
         })
             .then(response => loadAlarms())
     }
@@ -133,6 +147,7 @@ function DashboardContent() {
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + BASIC_AUTH_TOKEN,
             },
             body: JSON.stringify(newAlarmEnabled),
         })
@@ -229,15 +244,15 @@ function DashboardContent() {
 
                     <Container>
 
-                    {/* Current alarms */}
-                    <AlarmList alarms={alarms}
-                               deleteAlarm={(alarm) => deleteAlarm(alarm)}
-                               toggleAlarmEnabled={(alarm) => toggleAlarmEnabled(alarm)}
-                    />
+                        {/* Current alarms */}
+                        <AlarmList alarms={alarms}
+                                   deleteAlarm={(alarm) => deleteAlarm(alarm)}
+                                   toggleAlarmEnabled={(alarm) => toggleAlarmEnabled(alarm)}
+                        />
 
-                    <AddAlarmForm
-                        addAlarm={(alarm) => addAlarm(alarm)}
-                    />
+                        <AddAlarmForm
+                            addAlarm={(alarm) => addAlarm(alarm)}
+                        />
 
                     </Container>
 

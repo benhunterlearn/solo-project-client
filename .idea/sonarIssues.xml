@@ -8,6 +8,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/build/robots.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/Components/AddAlarmForm.js">
           <value>
             <set />
@@ -53,6 +58,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../solo-mvp-server/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../solo-mvp-server/src/main/java/com/benhunter/solomvpserver/Alarm.java">
           <value>
             <set />
@@ -68,12 +78,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../solo-mvp-server/src/main/java/com/benhunter/solomvpserver/WebSecurityConfig.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../solo-mvp-server/src/main/resources/application.properties">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../solo-mvp-server/src/main/resources/application.properties.example">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../solo-mvp-server/src/main/resources/index.html">
           <value>
             <set />
           </value>
