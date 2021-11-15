@@ -19,6 +19,7 @@ export function AddAlarmFromDrawer() {
         </ListItemIcon>
         <ListItemText primary="Add a new Alarm"/>
 
+        {/* TODO Use Dialog instead, see LoginFromDrawer component for an example. */}
         {/* Modal isn't closing. May because it's nested in the list? */}
         {/*<Modal*/}
         {/*    open={open}*/}
