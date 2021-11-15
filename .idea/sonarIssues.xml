@@ -8,6 +8,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/build/index.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/build/manifest.json">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/build/robots.txt">
           <value>
             <set />
@@ -44,6 +54,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/Components/EnableAlarmSwitch.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/Components/b64Utils.js">
           <value>
             <set />
           </value>

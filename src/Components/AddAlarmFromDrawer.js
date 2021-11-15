@@ -13,7 +13,7 @@ export function AddAlarmFromDrawer() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    return <ListItemButton onClick={() => handleOpen()}>
+    return <ListItemButton onClick={() => window.location.replace("#AddAlarmForm")}>
         <ListItemIcon>
             <AddAlertIcon/>
         </ListItemIcon>

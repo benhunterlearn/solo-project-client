@@ -28,7 +28,7 @@ import * as PropTypes from "prop-types";
 import {AlarmList} from "./AlarmList";
 import {utf8_to_b64} from "./b64Utils";
 
-const BASIC_AUTH_TOKEN = utf8_to_b64("user:password");
+// const BASIC_AUTH_TOKEN = utf8_to_b64("user:password");
 
 const drawerWidth = 240;
 
@@ -89,6 +89,8 @@ function DashboardContent() {
 
     const [alarms, setAlarms] = useState([]);
 
+    const [BASIC_AUTH_TOKEN, setBASIC_AUTH_TOKEN] = useState(utf8_to_b64("user:password"));
+
     const loadAlarms = () => {
         // Load alarms from server.
         fetch('http://localhost:8080/api/alarms', {
@@ -105,7 +107,7 @@ function DashboardContent() {
             });
     }
 
-// Load Alarms from the server.
+    // Load Alarms from the server.
     useEffect(() => {
         loadAlarms();
     }, [])
@@ -218,6 +220,7 @@ function DashboardContent() {
                             </ListItemIcon>
                             <ListItemText primary="Alarms"/>
                         </ListItemButton>
+
                         <AddAlarmFromDrawer/>
 
                     </List>

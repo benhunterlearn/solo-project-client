@@ -47,7 +47,7 @@ export function AddAlarmForm(props) {
 
     return (
         // <Container sx={{mt: 0, mb: 4}}>
-        <Grid container>
+        <Grid container id="AddAlarmForm">
             <Paper sx={{p: 2}}>
                 <Title>
                     Add a new Alarm
