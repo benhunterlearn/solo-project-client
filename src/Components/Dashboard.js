@@ -12,21 +12,20 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import Title from "./Title";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import ListItemText from "@mui/material/ListItemText";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import LoginIcon from '@mui/icons-material/Login';
 import {ListItemButton} from "@mui/material";
 import {AddAlarmFromDrawer} from "./AddAlarmFromDrawer";
 import {AddAlarmForm} from "./AddAlarmForm";
 import * as PropTypes from "prop-types";
 import {AlarmList} from "./AlarmList";
-import {utf8_to_b64} from "./b64Utils";
+import {b64_to_utf8, utf8_to_b64} from "./b64Utils";
+import {LoginFromDrawer} from "./LoginFromDrawer";
 
 // const BASIC_AUTH_TOKEN = utf8_to_b64("user:password");
 
@@ -89,14 +88,14 @@ function DashboardContent() {
 
     const [alarms, setAlarms] = useState([]);
 
-    const [BASIC_AUTH_TOKEN, setBASIC_AUTH_TOKEN] = useState(utf8_to_b64("user:password"));
+    const [basicAuthToken, setBasicAuthToken] = useState(utf8_to_b64("user:password"));
 
     const loadAlarms = () => {
         // Load alarms from server.
         fetch('http://localhost:8080/api/alarms', {
                 method: "GET",
                 headers: {
-                    'Authorization': 'Basic ' + BASIC_AUTH_TOKEN,
+                    'Authorization': 'Basic ' + basicAuthToken,
                 }
             }
         )
@@ -122,7 +121,7 @@ function DashboardContent() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + BASIC_AUTH_TOKEN,
+                'Authorization': 'Basic ' + basicAuthToken,
             },
             body: JSON.stringify(newAlarm),
         })
@@ -133,7 +132,7 @@ function DashboardContent() {
         fetch(alarm._links.self.href, {
             method: "DELETE",
             headers: {
-                'Authorization': 'Basic ' + BASIC_AUTH_TOKEN,
+                'Authorization': 'Basic ' + basicAuthToken,
             },
         })
             .then(response => loadAlarms())
@@ -149,11 +148,18 @@ function DashboardContent() {
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + BASIC_AUTH_TOKEN,
+                'Authorization': 'Basic ' + basicAuthToken,
             },
             body: JSON.stringify(newAlarmEnabled),
         })
             .then(response => loadAlarms());
+    }
+
+    function handleLogin(username, password) {
+        setBasicAuthToken(b64_to_utf8(username + ":" + password));
+        // TODO test the token here or in <LoginFromDrawer/>?
+        // Probably there so the user has a chance to fix their login info.
+        loadAlarms();  // Refresh the page after a login.
     }
 
     return (
@@ -197,6 +203,7 @@ function DashboardContent() {
                     </Toolbar>
                 </AppBar>
 
+                {/* Drawer on left side. */}
                 <Drawer variant="permanent" open={open}>
                     <Toolbar
                         sx={{
@@ -222,6 +229,8 @@ function DashboardContent() {
                         </ListItemButton>
 
                         <AddAlarmFromDrawer/>
+
+                        <LoginFromDrawer handleLogin={(username, password) => handleLogin(username, password)}/>
 
                     </List>
 
