@@ -18,14 +18,14 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import LoginIcon from '@mui/icons-material/Login';
 import {ListItemButton} from "@mui/material";
 import {AddAlarmFromDrawer} from "./AddAlarmFromDrawer";
 import {AddAlarmForm} from "./AddAlarmForm";
 import * as PropTypes from "prop-types";
 import {AlarmList} from "./AlarmList";
-import {b64_to_utf8, utf8_to_b64} from "./b64Utils";
+import {utf8_to_b64} from "./b64Utils";
 import {LoginFromDrawer} from "./LoginFromDrawer";
+import {LogoutFromDrawer} from "./LogoutFromDrawer";
 
 // const BASIC_AUTH_TOKEN = utf8_to_b64("user:password");
 
@@ -88,10 +88,17 @@ function DashboardContent() {
 
     const [alarms, setAlarms] = useState([]);
 
-    const [basicAuthToken, setBasicAuthToken] = useState(utf8_to_b64("user:password"));
+    const [basicAuthToken, setBasicAuthToken] = useState(null);
 
     const loadAlarms = () => {
         // Load alarms from server.
+        console.log("Loading alarms. Checking basicAuthToken: " + basicAuthToken);
+        if (basicAuthToken === null) {
+            console.log("basicAuthToken is null.");
+            setAlarms([]);  // Clear the alarms if user is not logged in.
+            return;
+        }
+        console.log("Fetching alarms.")
         fetch('http://localhost:8080/api/alarms', {
                 method: "GET",
                 headers: {
@@ -99,11 +106,23 @@ function DashboardContent() {
                 }
             }
         )
-            .then(response => response.json())
+            .then(response => {
+                console.log("Got a response:");
+                console.log(response);
+                if (response.status === 401) {
+                    console.log("HTTP status 401, Unauthorized.")
+                    setAlarms([]);
+                    return Promise.reject("Unauthorized request.");
+                }
+                console.log("Getting the json.");
+                return response.json();
+            })
             .then(json => {
                 setAlarms(json._embedded.alarms);
                 console.log(json._embedded.alarms)
-            });
+            })
+            .catch((reason) => console.log(reason))
+            .finally(() => console.log("End of loadAlarms()"));
     }
 
     // Load Alarms from the server.
@@ -156,11 +175,23 @@ function DashboardContent() {
     }
 
     function handleLogin(username, password) {
-        setBasicAuthToken(b64_to_utf8(username + ":" + password));
+        const token = utf8_to_b64(username + ":" + password);
+        console.log("Auth Token: " + token);
+
+        setBasicAuthToken(token);  // Use the useEffect hook to load the user's alarms after the token is set.
+
         // TODO test the token here or in <LoginFromDrawer/>?
         // Probably there so the user has a chance to fix their login info.
-        loadAlarms();  // Refresh the page after a login.
     }
+
+    function handleLogout() {
+        setBasicAuthToken(null);
+    }
+
+    // Update the user's alarms when their credentials change.
+    useEffect(() => {
+        loadAlarms();
+    }, [basicAuthToken]);
 
     return (
         <ThemeProvider theme={mdTheme}>
@@ -221,16 +252,22 @@ function DashboardContent() {
 
                     <List>
 
-                        <ListItemButton>
+                        <ListItemButton onClick={() => window.location.replace("#alarms")}>
                             <ListItemIcon>
                                 <DashboardIcon/>
                             </ListItemIcon>
                             <ListItemText primary="Alarms"/>
                         </ListItemButton>
 
-                        <AddAlarmFromDrawer/>
 
-                        <LoginFromDrawer handleLogin={(username, password) => handleLogin(username, password)}/>
+                        {basicAuthToken ?
+                            <>
+                                <AddAlarmFromDrawer/>
+                                <LogoutFromDrawer handleLogout={() => handleLogout()}/>
+                            </>
+                            :
+                                <LoginFromDrawer handleLogin={(username, password) => handleLogin(username, password)}/>
+                        }
 
                     </List>
 
@@ -252,7 +289,7 @@ function DashboardContent() {
 
                     {/* Header inside main content. */}
                     {/* Toolbar adds margin for the actual toolbar above the content. */}
-                    <Toolbar sx={{mb: 2}}/>
+                    <Toolbar sx={{mb: 2}} id="alarms"/>
 
                     <Container>
 

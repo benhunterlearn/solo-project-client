@@ -5,7 +5,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    ListItemButton,
+    ListItemButton, ListItemText,
     TextField
 } from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -41,6 +41,7 @@ export function LoginFromDrawer(props) {
                 <ListItemIcon>
                     <LoginIcon/>
                 </ListItemIcon>
+                <ListItemText primary="Log in"/>
             </ListItemButton>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Login</DialogTitle>
