@@ -45,3 +45,7 @@ Stuff happens. Services fail. Don't be the last to know.
 ## Just do it ##
 
 This is the tool you wish you had, and now it's here.
+
+# Developer notes
+
+Run a production build: `npm run build; npx serve -s build`

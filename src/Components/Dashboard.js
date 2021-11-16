@@ -262,11 +262,13 @@ function DashboardContent() {
 
                         {basicAuthToken ?
                             <>
-                                <AddAlarmFromDrawer/>
+                                <AddAlarmFromDrawer
+                                    addAlarm={(alarm) => addAlarm(alarm)}
+                                />
                                 <LogoutFromDrawer handleLogout={() => handleLogout()}/>
                             </>
                             :
-                                <LoginFromDrawer handleLogin={(username, password) => handleLogin(username, password)}/>
+                            <LoginFromDrawer handleLogin={(username, password) => handleLogin(username, password)}/>
                         }
 
                     </List>
@@ -293,18 +295,22 @@ function DashboardContent() {
 
                     <Container>
 
-                        {/* Current alarms */}
-                        <AlarmList alarms={alarms}
-                                   deleteAlarm={(alarm) => deleteAlarm(alarm)}
-                                   toggleAlarmEnabled={(alarm) => toggleAlarmEnabled(alarm)}
-                        />
-
-                        <AddAlarmForm
-                            addAlarm={(alarm) => addAlarm(alarm)}
-                        />
+                        {basicAuthToken ?
+                            // Current alarms
+                            (alarms.length > 0
+                                    ?
+                                    <AlarmList alarms={alarms}
+                                               deleteAlarm={(alarm) => deleteAlarm(alarm)}
+                                               toggleAlarmEnabled={(alarm) => toggleAlarmEnabled(alarm)}
+                                    />
+                                    :
+                                    <Typography sx={{mb: 4}}>Go add an alarm.</Typography>
+                            )
+                            :
+                            <Typography>Login to manage your alarms.</Typography>
+                        }
 
                     </Container>
-
 
                 </Box>
             </Box>
