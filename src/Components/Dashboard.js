@@ -12,22 +12,25 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import Title from "./Title";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import ListItemText from "@mui/material/ListItemText";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import {ListItemButton} from "@mui/material";
 import {AddAlarmFromDrawer} from "./AddAlarmFromDrawer";
 import {AddAlarmForm} from "./AddAlarmForm";
 import * as PropTypes from "prop-types";
 import {AlarmList} from "./AlarmList";
+import {utf8_to_b64} from "./b64Utils";
+import {LoginFromDrawer} from "./LoginFromDrawer";
+import {LogoutFromDrawer} from "./LogoutFromDrawer";
+
+// const BASIC_AUTH_TOKEN = utf8_to_b64("user:password");
 
 const drawerWidth = 240;
+
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -85,52 +88,59 @@ function DashboardContent() {
 
     const [alarms, setAlarms] = useState([]);
 
+    const [basicAuthToken, setBasicAuthToken] = useState(null);
+
     const loadAlarms = () => {
         // Load alarms from server.
-        fetch('http://localhost:8080/api/alarms')
-            .then(response => response.json())
+        console.log("Loading alarms. Checking basicAuthToken: " + basicAuthToken);
+        if (basicAuthToken === null) {
+            console.log("basicAuthToken is null.");
+            setAlarms([]);  // Clear the alarms if user is not logged in.
+            return;
+        }
+        console.log("Fetching alarms.")
+        fetch('http://localhost:8080/api/alarms', {
+                method: "GET",
+                headers: {
+                    'Authorization': 'Basic ' + basicAuthToken,
+                }
+            }
+        )
+            .then(response => {
+                console.log("Got a response:");
+                console.log(response);
+                if (response.status === 401) {
+                    console.log("HTTP status 401, Unauthorized.")
+                    setAlarms([]);
+                    return Promise.reject("Unauthorized request.");
+                }
+                console.log("Getting the json.");
+                return response.json();
+            })
             .then(json => {
                 setAlarms(json._embedded.alarms);
                 console.log(json._embedded.alarms)
-            });
+            })
+            .catch((reason) => console.log(reason))
+            .finally(() => console.log("End of loadAlarms()"));
     }
 
-// Load Alarms from the server.
+    // Load Alarms from the server.
     useEffect(() => {
-
-        // setAlarms([
-        //     {
-        //         name: 'Monitor web.benhunter.me',
-        //         target: 'http://web.benhunter.me',
-        //         action: 'HTTP',
-        //         interval: 1,  // minutes
-        //         webhook: '(discord webhook)',  // Discord Webhook
-        //     },
-        //     {
-        //         name: 'Monitor home.benhunter.me',
-        //         target: 'http://home.benhunter.me',
-        //         action: 'HTTP',
-        //         interval: 1,  // minutes
-        //         webhook: '(discord webhook)',  // Discord Webhook
-        //     },
-        // ]);
-
         loadAlarms();
-
     }, [])
 
     const addAlarm = (newAlarm) => {
 
-        // Add alarm to local state
+        // TODO Add alarm to local state (caching?)
         // setAlarms([...alarms, newAlarm]);
 
         // API call to create alarm on back end.
-        console.log("Add alarm.");
-
         fetch('http://localhost:8080/api/alarms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + basicAuthToken,
             },
             body: JSON.stringify(newAlarm),
         })
@@ -139,10 +149,49 @@ function DashboardContent() {
 
     const deleteAlarm = (alarm) => {
         fetch(alarm._links.self.href, {
-            method: 'DELETE',
+            method: "DELETE",
+            headers: {
+                'Authorization': 'Basic ' + basicAuthToken,
+            },
         })
             .then(response => loadAlarms())
     }
+
+    function toggleAlarmEnabled(alarm) {
+        const newAlarmEnabled = {
+            enabled: !alarm.enabled,
+        };
+
+        console.log("Toggle alarm: " + alarm.name);
+        fetch(alarm._links.self.href, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + basicAuthToken,
+            },
+            body: JSON.stringify(newAlarmEnabled),
+        })
+            .then(response => loadAlarms());
+    }
+
+    function handleLogin(username, password) {
+        const token = utf8_to_b64(username + ":" + password);
+        console.log("Auth Token: " + token);
+
+        setBasicAuthToken(token);  // Use the useEffect hook to load the user's alarms after the token is set.
+
+        // TODO test the token here or in <LoginFromDrawer/>?
+        // Probably there so the user has a chance to fix their login info.
+    }
+
+    function handleLogout() {
+        setBasicAuthToken(null);
+    }
+
+    // Update the user's alarms when their credentials change.
+    useEffect(() => {
+        loadAlarms();
+    }, [basicAuthToken]);
 
     return (
         <ThemeProvider theme={mdTheme}>
@@ -185,6 +234,7 @@ function DashboardContent() {
                     </Toolbar>
                 </AppBar>
 
+                {/* Drawer on left side. */}
                 <Drawer variant="permanent" open={open}>
                     <Toolbar
                         sx={{
@@ -202,13 +252,24 @@ function DashboardContent() {
 
                     <List>
 
-                        <ListItemButton>
+                        <ListItemButton onClick={() => window.location.replace("#alarms")}>
                             <ListItemIcon>
                                 <DashboardIcon/>
                             </ListItemIcon>
                             <ListItemText primary="Alarms"/>
                         </ListItemButton>
-                        <AddAlarmFromDrawer/>
+
+
+                        {basicAuthToken ?
+                            <>
+                                <AddAlarmFromDrawer
+                                    addAlarm={(alarm) => addAlarm(alarm)}
+                                />
+                                <LogoutFromDrawer handleLogout={() => handleLogout()}/>
+                            </>
+                            :
+                            <LoginFromDrawer handleLogin={(username, password) => handleLogin(username, password)}/>
+                        }
 
                     </List>
 
@@ -230,16 +291,26 @@ function DashboardContent() {
 
                     {/* Header inside main content. */}
                     {/* Toolbar adds margin for the actual toolbar above the content. */}
-                    <Toolbar sx={{mb: 2}}/>
+                    <Toolbar sx={{mb: 2}} id="alarms"/>
 
-                    {/* Current alarms */}
-                    <AlarmList alarms={alarms}
-                               deleteAlarm={(alarm) => deleteAlarm(alarm)}
-                    />
+                    <Container>
 
-                    <AddAlarmForm
-                        addAlarm={(alarm) => addAlarm(alarm)}
-                    />
+                        {basicAuthToken ?
+                            // Current alarms
+                            (alarms.length > 0
+                                    ?
+                                    <AlarmList alarms={alarms}
+                                               deleteAlarm={(alarm) => deleteAlarm(alarm)}
+                                               toggleAlarmEnabled={(alarm) => toggleAlarmEnabled(alarm)}
+                                    />
+                                    :
+                                    <Typography sx={{mb: 4}}>Go add an alarm.</Typography>
+                            )
+                            :
+                            <Typography>Login to manage your alarms.</Typography>
+                        }
+
+                    </Container>
 
                 </Box>
             </Box>
