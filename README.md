@@ -45,3 +45,24 @@ Stuff happens. Services fail. Don't be the last to know.
 ## Just do it ##
 
 This is the tool you wish you had, and now it's here.
+
+# Dev Notes
+
+```shell
+docker build -t solo-project-client:latest .
+docker run -it --rm -p80:3000 solo-project-client:latest
+
+# One liner to build and run.
+docker build -t solo-project-client:latest .; docker run -it --rm -p80:3000 solo-project-client:latest
+
+# Open a shell to check things out.
+docker run -it --rm -p80:3000 solo-project-client:latest /bin/bash 
+```
+
+
+## Error with docker base image node:17
+
+- `Error: error:0308010C:digital envelope routines::unsupported`
+- https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported
+- https://stackoverflow.com/questions/69665222/node-17-0-1-causes-some-error-digital-envelope-routinesunsupported
+- node:16 works, in the future will have to change start script to: `"start": "react-scripts --openssl-legacy-provider start"`
