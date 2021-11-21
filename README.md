@@ -66,7 +66,7 @@ docker run -it --rm -p80:3000 solo-project-client:latest /bin/bash
 - https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported
 - https://stackoverflow.com/questions/69665222/node-17-0-1-causes-some-error-digital-envelope-routinesunsupported
 - node:16 works, in the future will have to change start script to: `"start": "react-scripts --openssl-legacy-provider start"`
-=======
+
 # Developer notes
 
 Run a production build: `npm run build; npx serve -s build`
