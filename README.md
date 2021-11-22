@@ -49,14 +49,14 @@ This is the tool you wish you had, and now it's here.
 # Dev Notes
 
 ```shell
-docker build -t solo-project-client:latest .
-docker run -it --rm -p80:3000 solo-project-client:latest
+docker build -t solo-mvp-client:latest .
+docker run -it --rm -p80:3000 solo-mvp-client:latest
 
 # One liner to build and run.
-docker build -t solo-project-client:latest .; docker run -it --rm -p80:3000 solo-project-client:latest
+docker build -t solo-mvp-client:latest .; docker run -it --rm -p80:3000 solo-mvp-client:latest
 
 # Open a shell to check things out.
-docker run -it --rm -p80:3000 solo-project-client:latest /bin/bash 
+docker run -it --rm -p80:3000 solo-mvp-client:latest /bin/bash 
 ```
 
 
