@@ -22,11 +22,9 @@ const Alarm = (props) => {
                 <Grid container spacing={1}>
                     {/*consider md={6} in addition to xs*/}
 
-
                     <Grid item sm={2}>
                         <EnableAlarmSwitch alarm={props.alarm}
                                            toggleAlarmEnabled={props.toggleAlarmEnabled}/>
-
                     </Grid>
 
                     <Grid item sx={{textAlign: "left"}} xs={12} sm={8}>

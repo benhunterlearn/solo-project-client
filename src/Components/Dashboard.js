@@ -20,14 +20,20 @@ import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import {ListItemButton} from "@mui/material";
 import {AddAlarmFromDrawer} from "./AddAlarmFromDrawer";
-import {AddAlarmForm} from "./AddAlarmForm";
 import * as PropTypes from "prop-types";
 import {AlarmList} from "./AlarmList";
 import {utf8_to_b64} from "./b64Utils";
 import {LoginFromDrawer} from "./LoginFromDrawer";
 import {LogoutFromDrawer} from "./LogoutFromDrawer";
 
+
 // const BASIC_AUTH_TOKEN = utf8_to_b64("user:password");
+
+// const API_URL = 'http://localhost:8080/api/alarms';
+const API_URL = process.env.REACT_APP_API_URL;
+
+console.log(`Application NODE_ENV is ${process.env.NODE_ENV}`);
+console.log(`API_URL set to ${API_URL} from environment variable REACT_APP_API_URL.`);
 
 const drawerWidth = 240;
 
@@ -49,6 +55,7 @@ const AppBar = styled(MuiAppBar, {
         }),
     }),
 }));
+
 
 const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
     ({theme, open}) => ({
@@ -76,9 +83,12 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
     }),
 );
 
+
 const mdTheme = createTheme();
 
+
 AlarmList.propTypes = {alarms: PropTypes.arrayOf(PropTypes.any)};
+
 
 function DashboardContent() {
     const [open, setOpen] = React.useState(false);
@@ -99,7 +109,7 @@ function DashboardContent() {
             return;
         }
         console.log("Fetching alarms.")
-        fetch('http://localhost:8080/api/alarms', {
+        fetch(API_URL, {
                 method: "GET",
                 headers: {
                     'Authorization': 'Basic ' + basicAuthToken,
@@ -136,7 +146,7 @@ function DashboardContent() {
         // setAlarms([...alarms, newAlarm]);
 
         // API call to create alarm on back end.
-        fetch('http://localhost:8080/api/alarms', {
+        fetch(API_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
